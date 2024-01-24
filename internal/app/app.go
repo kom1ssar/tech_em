@@ -81,7 +81,7 @@ func (a *app) initHttpRoutesAndMiddleware(ctx context.Context) *chi.Mux {
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 	}))
 
-	person_v1.RegisterRoutes(ctx, router)
+	person_v1.RegisterRoutes(router, a.serviceProvider.PersonImplementationV1(ctx))
 
 	return router
 }
