@@ -5,6 +5,8 @@ import (
 	"github.com/kom1ssar/go_common/pkg/closer"
 	"github.com/kom1ssar/go_common/pkg/db"
 	"github.com/kom1ssar/go_common/pkg/db/pg"
+	"github.com/kom1ssar/tech_em/internal/api"
+	"github.com/kom1ssar/tech_em/internal/api/person_v1"
 	"github.com/kom1ssar/tech_em/internal/config"
 	"github.com/kom1ssar/tech_em/internal/config/env"
 	"log"
@@ -15,6 +17,8 @@ type serviceProvider struct {
 	pgConfig         config.PGConfig
 
 	dbClient db.Client
+
+	personV1Implementation api.PersonV1Implementation
 }
 
 func newServiceProvider() *serviceProvider {
@@ -63,4 +67,12 @@ func (s *serviceProvider) DbClient(ctx context.Context) db.Client {
 		s.dbClient = cl
 	}
 	return s.dbClient
+}
+
+func (s *serviceProvider) PersonImplementationV1(_ context.Context) api.PersonV1Implementation {
+	if s.personV1Implementation == nil {
+		s.personV1Implementation = person_v1.NewImplementation()
+	}
+
+	return s.personV1Implementation
 }
